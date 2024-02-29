@@ -31,4 +31,5 @@ Algorithms Frequently used in Machine Learning will be implemented here :
         13. Data Transformers (Estimator in Scikit Learn)
         14. Perceptron
         15. KMeans Algorithm
-      
+
+      Goal : Till May to Mid of June must be completed.
