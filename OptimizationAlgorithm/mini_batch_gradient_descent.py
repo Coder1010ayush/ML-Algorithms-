@@ -1,7 +1,8 @@
 """
-    this class implements the stochastic gradient descent optimisation algorithm.
+    this class implements gradient descent optimisation algorithm for 
+    a specific size of batch of data.
     this is a first order derivative optimisation algorithm which is used 
-    to find out the minima of the loss function given (Default : Root Square Mean Square)
+    to find out the minima of the loss function given (Default : Root Square Mean Square) // same as gradient_descent
 
 """
 import matplotlib.pyplot as plt
@@ -12,35 +13,30 @@ import numpy as np
 sys.path.insert(0, '/home/endless/Documents/Algorithm')
 from error_handling import ErrorHandler
 
-
-class Stochastic(ErrorHandler):
+class MiniBatchGradientDescent(ErrorHandler):
 
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
-        print("---------------------------------")
-        print("Stochastic Gradient Descent Class")
-        print("---------------------------------")
+        print('---------------------------------')
+        print('Mini Batch Gradient Descent Class')
+        print('---------------------------------')
 
     """
-    this optimisation algorithm is a best way to approximate the minima of a 
-    convex function.In this algorithm we change the weight and bias on the basis of a random
-    choosen row.
-    Mathematical formula remains same as batch gradient descent.
-    Formula is :
-            θ = θ - α * ∇J(θ)
-                where α is learning rate
-                and ∇J(θ) is derivative with respect to θ.
+        this is similar to stochastic gradient descent algorithm difference is just in batch size.
+        if batch_size = 1 than it is stochastic gradient descent otherwise it is 
+        mini batch_gradient descent.
     """
-    def call(self,x_train,y_train,epochs=50,lr=0.001):
+    def call(self,x_train,y_train,epochs=10,lr=0.001,batch_size=25):
 
         self.lr = lr
         self.epochs = epochs
+        self.batch_size = batch_size
         self.intercept = 0.0
         self.coeff = np.random.rand(x_train.shape[1])
 
-
         for i in range(self.epochs):
-            for cnt in range(x_train.shape[0]):
+
+            for btc in range(x_train.shape[0]/self.batch_size):
                 idx = np.random.randint(0,x_train.shape[0])
                 y_hat = np.dot(x_train[idx],self.coeff) + self.intercept 
                 print(y_hat)
@@ -54,15 +50,14 @@ class Stochastic(ErrorHandler):
         print('self.intercept is ',self.intercept)
 
         return [self.intercept,self.coeff]
-    
 
 
 if __name__ == '__main__':
-    sc = Stochastic()
-    data = np.random.randint(low=1,high=100,size=(150,4))
-    x_train = data[:,:3]
+    sc = MiniBatchGradientDescent()
+    data = np.random.randint(low=1,high=100,size=(50,2))
+    x_train = data[:,0]
     y_train = data[:,-1]
-    param = sc.call(x_train=x_train,y_train=y_train,lr=0.001,epochs=2)
+    param = sc.call(x_train=x_train,y_train=y_train,learning_rate=0.001,epochs=100)
     print(param)
     param1 = sc.call(x_train=x_train,y_train=y_train,learning_rate=0.001,epochs=95)
     print(param1)

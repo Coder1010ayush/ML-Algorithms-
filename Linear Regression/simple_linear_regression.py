@@ -53,6 +53,22 @@ class SimpleLinearRegression(ErrorHandler):
                 print("Slope : ",self.slope)
                 print("Intercept : ",self.intercept)
 
+    def fit_regularization(self,x_train,y_train,verbose = True,lamda = 0.3):
+        self.lamda = lamda
+        if self.shapeError(x_train=x_train,y_train=y_train):
+            numerator = 0.0
+            denominator = 0.0
+            for cnt in range(0,x_train.shape[0]):
+                numerator += (y_train[cnt]-np.mean(y_train))*(x_train[cnt]-np.mean(x_train))
+                denominator += (x_train[cnt]-np.mean(x_train))*(x_train[cnt]-np.mean(x_train))
+            
+            self.slope = numerator/(denominator+self.lamda)
+            self.intercept = np.mean(y_train) - self.slope*np.mean(x_train)
+            if verbose == True:
+
+                print("Slope : ",self.slope)
+                print("Intercept : ",self.intercept)
+                print("Regularization constant : ",self.lamda)
 
     def fit_gradient(self,x_train,y_train,epochs,learning_rate):
         ls = self.gd.call(x_train=x_train,y_train=y_train,learning_rate=0.001,epochs=50)

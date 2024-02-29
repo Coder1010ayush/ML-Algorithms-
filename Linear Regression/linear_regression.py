@@ -45,6 +45,21 @@ class LinearRegression(ErrorHandler):
         if verbose:
             print("intercept : ",self.intercept)
             print("coefficient : ",self.coeff )
+
+    def fit_regularization(self,x_train,y_train,verbose=True,lamda = 0.3):
+        self.lamda = lamda
+        x_trian = np.insert(x_trian,0,1,axis=1)
+        ident = np.identity(x_train.shape[0])
+        beta = np.linalg.inv(np.dot(x_trian.T,x_trian)+ ident*self.lamda ).dot(x_trian.T).dot(y_train)
+        self.intercept = beta[0]
+        self.coeff = beta[1:]
+
+        if verbose:
+            print("intercept : ",self.intercept)
+            print("coefficient : ",self.coeff )
+            print("Regularisation parameter constant : ",self.lamda)
+        
+
     
     """
         this method takes x_test (numpy array) as an argument and 
@@ -64,5 +79,3 @@ if __name__ == '__main__':
     lr.fit(x_trian=x_train,y_train=y_train)
     print(lr.predict(y))
 
-
-  
